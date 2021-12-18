@@ -19,7 +19,7 @@ const SearchInput = ({
         placeholder={placeholder}
         style={styles.input}
       />
-      <TouchableHighlight onPress={() => setShowFilter(!showFilter)}>
+      <TouchableHighlight onPress={() => setShowFilter(true)}>
         <MaterialCommunityIcons name="filter" size={25} color="#30475E" />
       </TouchableHighlight>
     </Paper>

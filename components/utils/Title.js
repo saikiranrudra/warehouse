@@ -9,6 +9,7 @@ export default Title;
 const styles = StyleSheet.create({
   title: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textTransform: "capitalize"
   },
 });
