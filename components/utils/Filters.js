@@ -1,23 +1,27 @@
 import { Button, SafeAreaView, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Title from "./Title";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import {
+  setCity,
+  setCluster,
+  setSpaceLimit,
+} from "../../features/warehouseFilters/filtersSlice";
 import TextInput from "./TextInput";
+import { useDispatch, useSelector } from "react-redux";
 
 const Filters = ({ setShowFilter }) => {
   const warehouses = useSelector((state) => state.warehouses);
-  const [city, setCity] = useState("");
-  const [cluster, setCluster] = useState("");
-  const [spaceLimit, setSpaceLimit] = useState({
-    min: 0,
-    max: 0,
-  });
-
+  const { city, cluster, spaceLimit } = useSelector((state) => state.filters);
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
       <Title>City</Title>
-      <Picker selectedValue={city} onValueChange={(item) => setCity(item)}>
+      <Picker
+        selectedValue={city}
+        onValueChange={(item) =>
+          dispatch({ type: "warehouseFilter/setCity", payload: item })
+        }
+      >
         <Picker.Item label="All" value="" />
         {[...new Set(warehouses.map((warehouse) => warehouse.city))].map(
           (city) => (
@@ -29,7 +33,9 @@ const Filters = ({ setShowFilter }) => {
       <Title>Cluster</Title>
       <Picker
         selectedValue={cluster}
-        onValueChange={(item) => setCluster(item)}
+        onValueChange={(item) =>
+          dispatch({ type: "warehouseFilter/setCluster", payload: item })
+        }
       >
         <Picker.Item label="All" value="" />
         {[...new Set(warehouses.map((warehouse) => warehouse.cluster))].map(
@@ -44,20 +50,26 @@ const Filters = ({ setShowFilter }) => {
         placeholder="Min"
         keyboardType="numeric"
         value={spaceLimit.min}
-        onValueChange={(newValue) =>
-          setSpaceLimit({ ...spaceLimit, min: newValue })
+        onChangeText={(newValue) =>
+          dispatch({
+            type: "warehouseFilter/setSpaceLimit",
+            payload: { ...spaceLimit, min: newValue },
+          })
         }
       />
       <TextInput
         placeholder="Max"
         keyboardType="numeric"
         value={spaceLimit.max}
-        onValueChange={(newValue) =>
-          setSpaceLimit({ ...spaceLimit, max: newValue })
+        onChangeText={(newValue) =>
+          dispatch({
+            type: "warehouseFilter/setSpaceLimit",
+            payload: { ...spaceLimit, max: newValue },
+          })
         }
       />
 
-      <Button title="Submit" onPress={() => setShowFilter(false)} />
+      <Button title="Close" onPress={() => setShowFilter(false)} />
     </SafeAreaView>
   );
 };

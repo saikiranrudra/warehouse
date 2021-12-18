@@ -7,15 +7,29 @@ import SearchInput from "../components/utils/SearchInput";
 
 const Home = () => {
   const warehouses = useSelector((state) => state.warehouses);
+  const { city, cluster, spaceLimit } = useSelector((state) => state.filters);
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
 
   const warehousesFilter = (warehouse) => {
-    if (searchInput === "") {
-      return true;
-    } else {
-      return warehouse.name.includes(searchInput);
-    }
+    let validCity = city === "" || city === warehouse.city;
+
+    let validCluster = cluster === "" || cluster === warehouse.cluster;
+
+    let validSpaceLimit =
+      isNaN(parseInt(spaceLimit.min)) ||
+      isNaN(parseInt(spaceLimit.max)) ||
+      (warehouse.space_available >= parseInt(spaceLimit.min) &&
+        warehouse.space_available >= parseInt(spaceLimit.max));
+    
+    let validName = warehouse.name === "" || warehouse.name.includes(searchInput);
+
+    return (
+      validName &&
+      validCity &&
+      validCluster &&
+      validSpaceLimit
+    );
   };
 
   return (

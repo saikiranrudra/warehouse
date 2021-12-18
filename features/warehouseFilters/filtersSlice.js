@@ -5,20 +5,20 @@ export const warehouseFilterSlice = createSlice({
   initialState: {
     city: "",
     cluster: "",
-    spaceLimit: { min: 0, max: 0 },
+    spaceLimit: { min: null, max: null },
   },
 
   reducers: {
-    setCity(state, newCity) {
-      state.city = newCity;
+    setCity(state, action) {
+      state.city = action.payload;
     },
 
-    setCluster(state, newCluster) {
-      state.cluster = newCluster;
+    setCluster(state, action) {
+      state.cluster = action.payload;
     },
 
-    setSpaceLimit(state, newSpaceLimit) {
-      state.spaceLimit = newSpaceLimit;
+    setSpaceLimit(state, action) {
+      state.spaceLimit = action.payload;
     },
   },
 });
