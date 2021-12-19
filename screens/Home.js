@@ -5,7 +5,7 @@ import ListItem from "../components/List/ListItem";
 import Filters from "../components/utils/Filters";
 import SearchInput from "../components/utils/SearchInput";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const warehouses = useSelector((state) => state.warehouses);
   const { city, cluster, spaceLimit } = useSelector((state) => state.filters);
   const [searchInput, setSearchInput] = useState("");
@@ -21,15 +21,15 @@ const Home = () => {
       isNaN(parseInt(spaceLimit.max)) ||
       (warehouse.space_available >= parseInt(spaceLimit.min) &&
         warehouse.space_available >= parseInt(spaceLimit.max));
-    
-    let validName = warehouse.name === "" || warehouse.name.includes(searchInput);
 
-    return (
-      validName &&
-      validCity &&
-      validCluster &&
-      validSpaceLimit
-    );
+    let validName =
+      warehouse.name === "" || warehouse.name.includes(searchInput);
+
+    return validName && validCity && validCluster && validSpaceLimit;
+  };
+
+  const handleOnClickWarehouse = (warehouse) => {
+    navigation.navigate("AboutWarehouse", { warehouse });
   };
 
   return (
@@ -49,7 +49,14 @@ const Home = () => {
       <FlatList
         data={warehouses.filter(warehousesFilter)}
         renderItem={({ item }) => (
-          <ListItem title={item.name} description={item.type} key={item.id} />
+          <ListItem
+            title={item.name}
+            onPress={() => {
+              handleOnClickWarehouse(item);
+            }}
+            description={item.type}
+            key={item.id}
+          />
         )}
       />
     </View>

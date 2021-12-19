@@ -1,20 +1,16 @@
 import { Button, SafeAreaView, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Title from "./Title";
-import {
-  setCity,
-  setCluster,
-  setSpaceLimit,
-} from "../../features/warehouseFilters/filtersSlice";
 import TextInput from "./TextInput";
 import { useDispatch, useSelector } from "react-redux";
+import Container from "./Container";
 
 const Filters = ({ setShowFilter }) => {
   const warehouses = useSelector((state) => state.warehouses);
   const { city, cluster, spaceLimit } = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   return (
-    <SafeAreaView style={styles.container}>
+    <Container>
       <Title>City</Title>
       <Picker
         selectedValue={city}
@@ -50,6 +46,7 @@ const Filters = ({ setShowFilter }) => {
         placeholder="Min"
         keyboardType="numeric"
         value={spaceLimit.min}
+        label="Min Limit"
         onChangeText={(newValue) =>
           dispatch({
             type: "warehouseFilter/setSpaceLimit",
@@ -61,6 +58,7 @@ const Filters = ({ setShowFilter }) => {
         placeholder="Max"
         keyboardType="numeric"
         value={spaceLimit.max}
+        label="Max Limit"
         onChangeText={(newValue) =>
           dispatch({
             type: "warehouseFilter/setSpaceLimit",
@@ -70,15 +68,11 @@ const Filters = ({ setShowFilter }) => {
       />
 
       <Button title="Close" onPress={() => setShowFilter(false)} />
-    </SafeAreaView>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-  },
 });
 
 export default Filters;
